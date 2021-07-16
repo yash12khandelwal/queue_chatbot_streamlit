@@ -30,13 +30,19 @@ def app():
         add_manual_user("doctor", mobile_number)
         
         if st.button('Book'):
+            aadhaar = st.text_input("Enter Aadhar Number")
+            cowin_ref_id = st.text_input("Enter Cowin Reference Id")
+            jewellers_id = st.text_input("Enter Jewellers Association Id")
             resp = add_manual_user("1", mobile_number)
+            resp = add_manual_user(aadhaar)
+            resp = add_manual_user(cowin_ref_id)
+            resp = add_manual_user(jewellers_id)
             st.success(resp)
 
         if st.button("Status"):
-            resp = add_manual_user("2", mobile_number)
+            resp = add_manual_user("1", mobile_number)
             st.success(resp)
 
         if st.button("Cancel"):
-            resp = add_manual_user("3", mobile_number)
+            resp = add_manual_user("2", mobile_number)
             st.success(resp)
