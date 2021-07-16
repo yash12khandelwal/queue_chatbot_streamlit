@@ -47,7 +47,7 @@ def send_notification(phone_number):
 	}
 
 	response = requests.request("POST", url, headers=headers, data=payload)
-	st.success('Notification Sent!')
+	st.success(response.text)
 
 	return response.status_code
 
@@ -61,16 +61,18 @@ def app():
 		st.title("Jewellers Association Vaccination Camp")
 		doctor_dict = get_doctor_db(doctor_mobile)
 
+		df = pd.DataFrame(doctor_dict['queue'])
+
 		next = st.button('Next patient')
 		if next:
 			resp_status = next_patient(doctor_mobile)
 
-		status = ['Queue'] * len(doctor_dict['queue'])
-		status[:doctor_dict['position_idx']] = ['Done'] * doctor_dict['position_idx']
-		df = pd.DataFrame(zip(doctor_dict['queue'], status), columns=['Mobile Number', 'status'])
-		st.write(df)
+		# status = ['Queue'] * len(doctor_dict['queue'])
+		# status[:doctor_dict['position_idx']] = ['Done'] * doctor_dict['position_idx']
+		# df = pd.DataFrame(zip(doctor_dict['queue'], status), columns=['Mobile Number', 'status'])
+		st.write(df[['app_number', 'timestamp', 'mobile', 'aadhar', 'uid', 'last_vacc_code']])
 
-		for index, row in df.iterrows():
-			if st.button(row['Mobile Number'][0]):
-				send_notification(row['Mobile Number'][0])
+		for index, row in list(df.iterrows())[doctor_dict['position_idx']:]:
+			if st.button(row['mobile'], key=row['timestamp']):
+				send_notification(row['mobile'])
 
