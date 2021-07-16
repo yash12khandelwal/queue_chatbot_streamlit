@@ -34,6 +34,23 @@ def next_patient(doctor_mobile):
 
 	return response.status_code
 
+def send_notification(phone_number):
+
+	url = "https://queuechatbot.yash12khandelwa.repl.co/send_notification"
+
+	payload = json.dumps({
+		"patient_mobile": phone_number,
+		"number": "1"
+	})
+	headers = {
+		'Content-Type': 'application/json'
+	}
+
+	response = requests.request("POST", url, headers=headers, data=payload)
+	st.success('Notification Sent!')
+
+	return response.status_code
+
 def app():
 	st.title('Welcome to queuing app!')
 
@@ -41,7 +58,7 @@ def app():
 	st.button("Refresh")
 
 	if doctor_mobile:
-		st.title("Shiv Kripa Maternity & General Hospital")
+		st.title("Jewellers Association Vaccination Camp")
 		doctor_dict = get_doctor_db(doctor_mobile)
 
 		next = st.button('Next patient')
@@ -52,4 +69,8 @@ def app():
 		status[:doctor_dict['position_idx']] = ['Done'] * doctor_dict['position_idx']
 		df = pd.DataFrame(zip(doctor_dict['queue'], status), columns=['Mobile Number', 'status'])
 		st.write(df)
+
+		for index, row in df.iterrows():
+			if st.button(row['Mobile Number'][0]):
+				send_notification(row['Mobile Number'][0])
 
