@@ -54,7 +54,12 @@ def send_notification(phone_number):
 def app():
 	st.title('Welcome to queuing app!')
 
-	doctor_mobile = st.text_input('Enter mobile number of doctor: ')
+	init_value = ''
+	if 'doctor_mobile' in st.session_state:
+		init_value = st.session_state['doctor_mobile']
+
+	doctor_mobile = st.text_input('Enter mobile number of doctor: ', value=init_value)
+	st.session_state['doctor_mobile'] = doctor_mobile 
 	st.button("Refresh")
 
 	if doctor_mobile:
