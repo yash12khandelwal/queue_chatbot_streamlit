@@ -27,6 +27,7 @@ def app():
     # doctor_mobile = st.text_input("Enter Doctor Code")
     doctor_mobile = "vaccine"
     mobile_number = "91" + st.text_input("Enter Mobile Number") + "@c.us"
-    if mobile_number:
+    register_user = st.button("Register")
+    if register_user:
         add_manual_user(doctor_mobile, mobile_number)
         st.success("User added in queue")

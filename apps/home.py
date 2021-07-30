@@ -61,24 +61,23 @@ def app():
 	# doctor_mobile = st.text_input('Enter mobile number of doctor: ', value=init_value)
 	doctor_mobile = 'vaccine'
 	st.session_state['doctor_mobile'] = doctor_mobile 
-	st.button("Refresh")
 
 	if doctor_mobile:
 		st.title("Jewellers Association Vaccination Camp")
-		doctor_dict = get_doctor_db(doctor_mobile)
-
-		df = pd.DataFrame(doctor_dict['queue'])
 
 		next = st.button('Next patient')
 		if next:
 			resp_status = next_patient(doctor_mobile)
 
+		doctor_dict = get_doctor_db(doctor_mobile)
+		df = pd.DataFrame(doctor_dict['queue'])
 		# status = ['Queue'] * len(doctor_dict['queue'])
 		# status[:doctor_dict] = ['Done'] * doctor_dict['position_idx']
 		# df = pd.DataFrame(zip(doctor_dict['queue'], status), columns=['Mobile Number', 'status'])
-		st.write(df[['mobile', 'status']])
+		st.write(df[df['status'] == 'QUEUED']['mobile'])
 
-		for index, row in list(df.iterrows())[doctor_dict['position_idx']:]:
-			if st.button(row['mobile'], key=row['timestamp']):
-				send_notification(row['mobile'])
+
+		# for index, row in list(df.iterrows())[doctor_dict['position_idx']:]:
+		# 	if st.button(row['mobile'], key=row['timestamp']):
+		# 		send_notification(row['mobile'])
 
