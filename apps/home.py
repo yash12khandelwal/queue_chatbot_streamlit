@@ -52,13 +52,14 @@ def send_notification(phone_number):
 	return response.status_code
 
 def app():
-	st.title('Welcome to queuing app!')
+	st.title('Welcome to DQ!')
 
 	init_value = ''
 	if 'doctor_mobile' in st.session_state:
 		init_value = st.session_state['doctor_mobile']
 
-	doctor_mobile = st.text_input('Enter mobile number of doctor: ', value=init_value)
+	# doctor_mobile = st.text_input('Enter mobile number of doctor: ', value=init_value)
+	doctor_mobile = 'vaccine'
 	st.session_state['doctor_mobile'] = doctor_mobile 
 	st.button("Refresh")
 
@@ -73,9 +74,9 @@ def app():
 			resp_status = next_patient(doctor_mobile)
 
 		# status = ['Queue'] * len(doctor_dict['queue'])
-		# status[:doctor_dict['position_idx']] = ['Done'] * doctor_dict['position_idx']
+		# status[:doctor_dict] = ['Done'] * doctor_dict['position_idx']
 		# df = pd.DataFrame(zip(doctor_dict['queue'], status), columns=['Mobile Number', 'status'])
-		st.write(df[['app_number', 'timestamp', 'mobile', 'aadhar', 'uid', 'last_vacc_code']])
+		st.write(df[['mobile', 'status']])
 
 		for index, row in list(df.iterrows())[doctor_dict['position_idx']:]:
 			if st.button(row['mobile'], key=row['timestamp']):
